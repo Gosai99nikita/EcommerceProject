@@ -4,7 +4,7 @@
   "description": "Ecommerce website",
   "main": "index.js",
   "scripts": {
-    "start": "node Index.js"
+    "start": "node ./Index.js"
   },
   "author": "unknown",
   "license": "ISC",
