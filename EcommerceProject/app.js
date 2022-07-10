@@ -1,3 +1,6 @@
+if(process.env.Node_ENV !== 'production'){
+    require('dotenv').config()
+}
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -17,7 +20,7 @@ const cartRoutes =require('./routes/cart');
 const wishlistRoutes =require('./routes/wishlist');
 
 //Connect Mongoose
-mongoose.connect('mongodb://localhost:27017/shopApp',{useNewUrlParser: true,useUnifiedTopology: true})
+mongoose.connect(process.env.DB_URL,{useNewUrlParser: true,useUnifiedTopology: true})
     .then((data) => {
         console.log("DB Connected");
     })
@@ -58,6 +61,8 @@ passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
+
 //response locals- available on all templates
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
@@ -67,7 +72,9 @@ app.use((req, res, next) => {
     next();
 })
 
-
+app.get('/',(req,res)=>{
+    res.redirect("/products");
+})
 
 
 
@@ -76,6 +83,6 @@ app.use(authRoutes);
 app.use(cartRoutes);
 app.use(wishlistRoutes);
 
-app.listen(3000,()=>{
+app.listen(process.env.PORT || 3000,()=>{
     console.log("Server Running");
 })
